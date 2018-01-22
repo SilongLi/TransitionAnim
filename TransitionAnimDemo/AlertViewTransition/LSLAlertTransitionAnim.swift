@@ -9,7 +9,7 @@
 import UIKit
 
 class LSLAlertTransitionAnim: NSObject {
-    var duration = 0.5
+    var duration = 0.1
     var width: CGFloat  = 0.0
     var height: CGFloat = 0.0
     
@@ -31,7 +31,7 @@ extension LSLAlertTransitionAnim: UIViewControllerAnimatedTransitioning {
         let contentFrame = transitionContext.containerView.bounds
         
         let maskView = UIView()
-        maskView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.2)
+        maskView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         maskView.frame = contentFrame
         maskView.alpha = 0
         maskView.tag   = 999 // 方便在dismiss动画中查找到当前的maskView
@@ -41,6 +41,7 @@ extension LSLAlertTransitionAnim: UIViewControllerAnimatedTransitioning {
         toView.bounds.size = CGSize.init(width: self.width, height: self.height)
         toView.layer.cornerRadius  = 5
         toView.layer.masksToBounds = true
+        toView.transform = CGAffineTransform.init(scaleX: 0.9, y: 0.9)
         
         transitionContext.containerView.addSubview(maskView)
         transitionContext.containerView.addSubview(toView)
@@ -48,8 +49,13 @@ extension LSLAlertTransitionAnim: UIViewControllerAnimatedTransitioning {
         UIView.animate(withDuration: self.duration, animations: {
             toView.alpha   = 1
             maskView.alpha = 1
+            toView.transform = CGAffineTransform.init(scaleX: 1.05, y: 1.05)
         }) { (Bool) in
-            transitionContext.completeTransition(true)
+            UIView.animate(withDuration: 0.15, animations: {
+                toView.transform = CGAffineTransform.identity
+            }, completion: { (_) in
+                transitionContext.completeTransition(true)
+            })
         }
     }
     

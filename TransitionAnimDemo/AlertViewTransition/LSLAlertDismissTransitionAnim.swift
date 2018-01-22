@@ -29,11 +29,10 @@ extension LSLAlertDismissTransitionAnim: UIViewControllerAnimatedTransitioning {
             }
         }
         
-        let contentFrame = transitionContext.containerView.bounds
-        
         UIView.animate(withDuration: self.duration, animations: { 
             fromView?.alpha = 0
             maskView?.alpha = 0
+            fromView?.transform = CGAffineTransform.init(scaleX: 0.9, y: 0.9)
         }) { (Bool) in
             transitionContext.completeTransition(true)
         }
